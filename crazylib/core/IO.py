@@ -151,3 +151,33 @@ def read_bin_data(file_path, byte_n =4):
 
 
 
+
+def pickle_save(path,data):
+    import pickle
+    with open(path, 'wb') as f:
+        f.write(pickle.dumps(data))
+
+
+
+def pickle_read(path):
+    import pickle
+    with open(path, 'rb') as f:
+        data = pickle.loads(f.read())
+        return data
+
+
+def read_bin_data(file_path, byte_n =4):
+
+    data_list = []
+    with open(file_path, 'rb') as f:
+
+        byte_data = f.read(byte_n)
+        while byte_data != b"":
+
+            float_num = struct.unpack('f', byte_data)
+            data_list.append(float_num)
+
+            byte_data = f.read(byte_n)
+
+
+        return data_list
