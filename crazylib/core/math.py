@@ -6,7 +6,7 @@ import json
 import matplotlib.pyplot as plt
 from scipy import interpolate
 from .basics import *
-
+import math
 def my_smooth_3rd(x):
     f0 = x[0]
     f1 = x[-1]
@@ -52,3 +52,54 @@ def GenerateWeight(n,fre):
 
     ynew = f(xnew)
     return ynew
+
+def get_rotation_matrix(eular):
+    yaw,pitch,roll =  eular
+    yawMatrix = np.matrix([
+        [math.cos(yaw), -math.sin(yaw), 0],
+        [math.sin(yaw), math.cos(yaw), 0],
+        [0, 0, 1]
+    ])
+
+    pitchMatrix = np.matrix([
+        [math.cos(pitch), 0, math.sin(pitch)],
+        [0, 1, 0],
+        [-math.sin(pitch), 0, math.cos(pitch)]
+    ])
+
+    rollMatrix = np.matrix([
+        [1, 0, 0],
+        [0, math.cos(roll), -math.sin(roll)],
+        [0, math.sin(roll), math.cos(roll)]
+    ])
+
+    R = yawMatrix * pitchMatrix * rollMatrix
+    return R
+
+
+
+
+def euler_to_quaternion(eular):
+
+    yaw,pitch,roll =  eular
+
+    qx = np.sin(roll / 2) * np.cos(pitch / 2) * np.cos(yaw / 2) - np.cos(roll / 2) * np.sin(pitch / 2) * np.sin(yaw / 2)
+    qy = np.cos(roll / 2) * np.sin(pitch / 2) * np.cos(yaw / 2) + np.sin(roll / 2) * np.cos(pitch / 2) * np.sin(yaw / 2)
+    qz = np.cos(roll / 2) * np.cos(pitch / 2) * np.sin(yaw / 2) - np.sin(roll / 2) * np.sin(pitch / 2) * np.cos(yaw / 2)
+    qw = np.cos(roll / 2) * np.cos(pitch / 2) * np.cos(yaw / 2) + np.sin(roll / 2) * np.sin(pitch / 2) * np.sin(yaw / 2)
+
+    return np.array([qw,qx, qy, qz])
+
+def quaternion_to_euler(quaternion):
+    w, x, y, z = quaternion
+    t0 = +2.0 * (w * x + y * z)
+    t1 = +1.0 - 2.0 * (x * x + y * y)
+    roll = math.atan2(t0, t1)
+    t2 = +2.0 * (w * y - z * x)
+    t2 = +1.0 if t2 > +1.0 else t2
+    t2 = -1.0 if t2 < -1.0 else t2
+    pitch = math.asin(t2)
+    t3 = +2.0 * (w * z + x * y)
+    t4 = +1.0 - 2.0 * (y * y + z * z)
+    yaw = math.atan2(t3, t4)
+    return np.array([yaw, pitch, roll])

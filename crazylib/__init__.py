@@ -3,6 +3,8 @@ from .core.file_manager import *
 from .core.basics import *
 from .core.dirs import *
 from .core.IO import *
+from .core.deploy import *
+from .core.math import *
 
 def get_this_path(file=__file__):
     abs_path = os.path.abspath(file)
@@ -68,6 +70,10 @@ def git_managing(cmd_list=[]):
     for cmd in cmd_list:
         os.system(cmd)
 
+def deploy():
+    import crazylib
+    crazylib.deploy_link_to_annconda(src_lib_path="/home/collin/Documents/my_projects/dl_3dface/core/utils",
+                                     dst_lib_name="mytools")
 
     
 def Test():
