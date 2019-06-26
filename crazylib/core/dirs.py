@@ -12,8 +12,11 @@ def makdirs(path):
 
 
 def list_curren_dir(root,prefix=None):
-    contents =os.listdir(root)
+
     dirs=[]
+    if os.path.exists(root)==False:
+        return []
+    contents =os.listdir(root)
     for content in contents:
         sub_path = os.path.join(root, content)
         if os.path.isdir(sub_path)==True:
@@ -25,7 +28,7 @@ def list_curren_dir(root,prefix=None):
     if prefix is None:
         return dirs
     else:
-        return None
+        return []
 
 
 def list_all_dirs(root, dirs_list,empty_dirs_list):
