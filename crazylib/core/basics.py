@@ -27,7 +27,6 @@ def get_file_modified_time(filename):
 
 
 
-
 def DrawLine(y,flag,ymin,ymax):
     x = np.linspace(0, y.shape[0], y.shape[0])
     plt.plot(x, y)
