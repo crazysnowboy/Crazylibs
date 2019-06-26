@@ -41,7 +41,19 @@ def CreateSubModule(create_file_name,dirs_list=["core"]):
     WriteStringLine(this_file_path,this_file)
 
 
-def git_managing(cmd_list):
+def git_managing(cmd_list=[]):
+    
+    if len(cmd_list)==0:
+        cmd_list=[
+            "git config --global credential.helper store",
+            "git status",
+            "git add crazylib/__init__.py",
+            "git status",
+            "git commit -m 'modified __init__.py'",
+            "git status",
+            "git push origin master"
+        ]
+    
     this_path = get_file_dir(get_this_path())
     os.chdir(os.path.join(this_path,"../"))
     for cmd in cmd_list:
