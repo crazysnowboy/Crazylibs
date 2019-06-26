@@ -42,22 +42,38 @@ def CreateSubModule(create_file_name,dirs_list=["core"]):
 
 
 def git_managing(cmd_list=[]):
+
+    this_path = get_file_dir(get_this_path())
+    os.chdir(os.path.join(this_path,"../"))
     
+    os.system("git status >log.txt")
+    log_str_lines = ReadLines("log.txt")
+    git_modified_info=""
+    add_file_str=""
+    for log_str in log_str_lines:
+        if "modified:" in log_str:
+            git_modified_info += (" "+log_str)
+            add_file_str += (" "+log_str.replace("modified:","").strip())
+
+    print(git_modified_info)
+    print(add_file_str)
+
     if len(cmd_list)==0:
         cmd_list=[
             "git config --global credential.helper store",
             "git status",
-            "git add crazylib/__init__.py",
+            "git add "+add_file_str,
             "git status",
-            "git commit -m 'modified __init__.py'",
-            "git status",
-            "git push origin master"
+            "git commit -m "+ git_modified_info,
+            "git log",
+            # "git push origin master"
         ]
-    
-    this_path = get_file_dir(get_this_path())
-    os.chdir(os.path.join(this_path,"../"))
+
+
     for cmd in cmd_list:
         os.system(cmd)
+
+
     
 def Test():
 
