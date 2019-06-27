@@ -5,6 +5,8 @@ from .core.dirs import *
 from .core.IO import *
 from .core.deploy import *
 from .core.math import *
+from .core.vi import *
+
 
 def get_this_path(file=__file__):
     abs_path = os.path.abspath(file)
@@ -43,7 +45,7 @@ def CreateSubModule(create_file_name,dirs_list=["core"]):
     WriteStringLine(this_file_path,this_file)
 
 
-def git_managing(cmd_list=[]):
+def git_add_commit_push(cmd_list=[]):
     # this code is very crazy
     this_path = get_file_dir(get_this_path())
     os.chdir(os.path.join(this_path, "../"))
@@ -69,6 +71,21 @@ def git_managing(cmd_list=[]):
 
     for cmd in cmd_list:
         os.system(cmd)
+
+def git_pull(cmd_list=[]):
+    # this code is very crazy
+    this_path = get_file_dir(get_this_path())
+    os.chdir(os.path.join(this_path, "../"))
+
+    if len(cmd_list) == 0:
+        cmd_list = [
+            "git checkout master",
+            "git pull origin master"
+        ]
+
+    for cmd in cmd_list:
+        os.system(cmd)
+
 
 def deploy():
     import crazylib
