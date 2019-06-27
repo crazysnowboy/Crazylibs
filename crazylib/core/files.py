@@ -73,3 +73,20 @@ def get_file_list(data_root_path, suffix,only_name=False):
 
     return file_paths_list
 
+
+def copy_file(srcfile, dstfile):
+    import shutil
+    shutil.copyfile(srcfile, dstfile)
+
+def copy_files_main():
+    img_path = ""
+    dst_path=""
+
+    file_name_list = get_file_list(img_path,".png",only_name=True)
+    for idx,img_name in (enumerate(file_name_list)):
+        if idx>100:
+            break
+
+        src_file = os.path.join(img_path,img_name)
+        dst_file = os.path.join(dst_path,img_name)
+        crazylib.copy_file(src_file,dst_file)
