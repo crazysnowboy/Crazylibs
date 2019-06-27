@@ -7,11 +7,12 @@ import matplotlib.pyplot as plt
 from scipy import interpolate
 import time
 import datetime
-
+import copy
+import cv2
 class Cropper():
     def __init__(self):
         pass
-    def crop_with_landmarks(self,image,landmarks,extend_scale):
+    def crop_with_landmarks(self,image,landmarks,extend_scale=1.2):
 
 
         bbox = self.caculate_bbox(image,landmarks)
@@ -78,6 +79,7 @@ class Cropper():
         cv2.rectangle(image_draw,(x_min,y_min),(x_max,y_max),(0,255,0),1)
         cv2.namedWindow("image_bbox",0)
         cv2.imshow("image_bbox",image_draw)
+        key = cv2.waitKey(0)
 
 
 
