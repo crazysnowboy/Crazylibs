@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import copy
+import cv2
 def DrawLine(y,flag,ymin,ymax):
     x = np.linspace(0, y.shape[0], y.shape[0])
     plt.plot(x, y)
@@ -16,7 +18,7 @@ class Visualizer():
     def __init__(self):
 
         pass
-    def show(self,img_input,landmarks_input,scale=3,wait_time=0):
+    def show(self,img_input,landmarks_input,scale=3,wait_time=0,draw_flag="num",flag="test"):
 
         landmarks = copy.deepcopy(landmarks_input.reshape(-1,2))
         img = copy.deepcopy(img_input)
@@ -28,9 +30,13 @@ class Visualizer():
             landmarks[:,1] = landmarks[:,1]
             for i in range(0, landmarks.shape[0], 1):
                 pt = (int(landmarks[i, 0]),int(landmarks[i, 1]))
-                cv2.circle(img, pt, 3, (255, 255, 0), -1)
 
-        cv2.namedWindow("test", 0)
+                if draw_flag=="num":
+                    cv2.putText(img,str(i), pt, cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 2)
+                else:
+                    cv2.circle(img, pt, 3, (255, 255, 0), -1)
 
-        cv2.imshow("test", img)
+        cv2.namedWindow(flag, 0)
+
+        cv2.imshow(flag, img)
         key = cv2.waitKey(wait_time)

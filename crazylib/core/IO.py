@@ -24,7 +24,8 @@ def ReadSentence(file_path,text_list):
     in_file.close()
 
 def ReadLines(file_path):
-    in_file = open(file_path, 'r',encoding=FileType(file_path))
+    # in_file = open(file_path, 'r',encoding=FileType(file_path))
+    in_file = open(file_path, 'r')
     lines = in_file.readlines()
     return lines
 
