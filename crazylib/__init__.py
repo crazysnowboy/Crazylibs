@@ -8,17 +8,14 @@ from .core.math import *
 from .core.vi import *
 
 
-def get_this_path(file=__file__):
-    abs_path = os.path.abspath(file)
-    # real_path = os.path.realpath(__file__)
-    return abs_path
+
+
 
 def CreateSubModule(create_file_name,dirs_list=["core"]):
 
-    this_file_path = get_this_path()
-    file_dir, sub_dir, full_file_name, bname, ext = ParsePath(this_file_path,False)
 
-    create_file_path = file_dir
+
+    create_file_path = get_this_path(__file__)
     import_str = "from "
     for sub_dir in dirs_list:
         create_file_path = os.path.join(create_file_path,sub_dir)

@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import copy
-import cv2
+
 def DrawLine(y,flag,ymin,ymax):
     x = np.linspace(0, y.shape[0], y.shape[0])
     plt.plot(x, y)
@@ -19,7 +19,7 @@ class Visualizer():
 
         pass
     def show(self,img_input,landmarks_input,scale=3,wait_time=0,draw_flag="num",flag="test"):
-
+        import cv2
         landmarks = copy.deepcopy(landmarks_input.reshape(-1,2))
         img = copy.deepcopy(img_input)
         img = cv2.resize(img,(img.shape[1]*scale,img.shape[0]*scale))

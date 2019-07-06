@@ -6,10 +6,16 @@ import json
 from scipy import interpolate
 
 
+def get_this_path(file=__file__):
+    abs_path = os.path.abspath(file)
+    file_dir, sub_dir, full_file_name, bname, ext = ParsePath(abs_path,False)
+    return file_dir
+
 def makdirs(path):
     if os.path.exists(path) is False:
         os.makedirs(path)
-
+def remove_dir(path):
+    os.removedirs(path)
 
 def list_curren_dir(root,prefix=None):
 
