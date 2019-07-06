@@ -8,7 +8,7 @@ from scipy import interpolate
 import time
 import datetime
 import copy
-import cv2
+
 class Cropper():
     def __init__(self):
         pass
@@ -72,6 +72,7 @@ class Cropper():
 
 
     def draw_bbox(self,image_input,bbox_input):
+        import cv2
         (x_min, x_max, y_min, y_max) = copy.deepcopy(bbox_input)
         image_draw = copy.deepcopy(image_input)
 
