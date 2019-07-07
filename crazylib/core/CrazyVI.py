@@ -29,6 +29,9 @@ class PyPangolin():
 
     def SholudExit(self):
         res = self.crazy_gui.ShouldExit()
+        self.PreCall()
+        self.ProcessEvent()
+
         return res
 
     def PreCall(self):
@@ -110,4 +113,94 @@ def CrazyVI_Test():
 
         gui.PostCall()
 
+
+class BaseGUIManager():
+    def __init__(self):
+        self.conf = pyCrazyCPP.config_parameters()
+        self.cross_datum = pyCrazyCPP.CrossDatum()
+        self.basic_tool = pyCrazyCPP.BaseOperator()
+
+        self.conf.WithPanel = True
+
+        self.crazy_gui = pyCrazyCPP.CrazyGUI(self.conf)
+        
+        
+        this_path = dirs.get_file_dir(__file__)
+        shader_root=os.path.join(this_path,"shader")
+        vert_file=os.path.join("TransformVertexShader.vert")
+        frag_file=os.path.join("TextureFragmentShader.frag")
+        shader_program = loadProgramFromFile(vert_file,frag_file,shader_root)
+        self.renderer = pyCrazyCPP.CrazyRender(shader_program)
+
+
+    def add_box(self,name,state):
+        self.conf.SetGUI_CHECKBOX(name,state)
+        self.cross_datum.InsertBox(name, state)
+
+    def add_button(self,name,state):
+        self.conf.SetGUI_BUTTON(name)
+        self.cross_datum.InsertButton(name, state)
+
+    def add_databar(self,name, s, m, e):
+
+        self.conf.SetGUI_DataBar(name,s,m,e)
+        self.cross_datum.InsertData(name, 0.0)
+    def update_gui(self):
+
+        self.crazy_gui.UpdateUI(self.conf)
+
+    def CheckBox(self,controller):
+        return  self.cross_datum.CheckBox(controller)
+
+    def CheckMouseButton(self,name):
+        return  self.cross_datum.CheckMouseButton(name)
+
+    def GetMouse(self,name):
+        return  self.cross_datum.GetMousePosition(name)
+
+
+    def CheckSwitch(self,name):
+        return  self.cross_datum.CheckSwitch(name)
+
+    def CheckSwitchBox(self,name,bool):
+        return  self.cross_datum.CheckSwitchBox(name,bool)
+
+
+
+    def CheckButton(self,controller):
+        return  self.cross_datum.CheckButton(controller)
+
+    def Update(self,mesh,flag="mesh"):
+
+        if flag=="ge":
+            self.renderer.UpdateGe(mesh)
+        elif flag =="mesh":
+            self.renderer.Update(mesh)
+
+
+    def PostProcess(self,draw_axis=False,scale =1.0):
+
+        if(draw_axis==True):
+            lines = [
+                np.array([[0, 0, -1.0], [0, 0, 1.0]]),
+                np.array([[0, -1.0, 0], [0, 1.0, 0]]),
+                np.array([[-1.0, 0, 0], [1.0, 0, 0]]),
+            ]
+            for line in lines:
+                src_pts = line[0,:]*scale
+                dst_pts = line[1,:]*scale
+                self.basic_tool.DrawLine(float(src_pts[0]), float(src_pts[1]), float(src_pts[2]),
+                                     float(dst_pts[0]), float(dst_pts[1]), float(dst_pts[2]),
+                                     0.0, 1.0, 0.0)
+
+        self.renderer.Rendering(self.crazy_gui.GetViewMatrix(), self.conf.GetDrawMode())
+        self.crazy_gui.PostCall()
+
+    def ShouldExit(self):
+        res = self.crazy_gui.ShouldExit()
+        self.crazy_gui.Precall()
+        self.crazy_gui.ProcessEvent(self.cross_datum)
+
+
+        return res
 
