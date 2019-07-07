@@ -63,7 +63,7 @@ def git_add_commit_push(cmd_list=[]):
             "git add " + add_file_info,
             "git status",
             "git commit -m 'modified " + add_file_info + "'",
-            "git push origin master"
+            "git push origin HEAD:master"
         ]
 
     for cmd in cmd_list:
