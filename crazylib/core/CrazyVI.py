@@ -51,6 +51,7 @@ class PyPangolin():
 class PyRender():
 
     def __init__(self):
+
         this_path = dirs.get_file_dir(__file__)
         shader_root=os.path.join(this_path,"shader")
         vert_file=os.path.join("TransformVertexShader.vert")
@@ -69,7 +70,13 @@ class PyRender():
         self.render.UpdateGe(mesh_ge)
 
 
-def ReadObjMesh(root_path,obj_name):
+def ReadObjMesh(root_path="",obj_name=""):
+    this_path = dirs.get_file_dir(__file__)
+    obj_root_path = os.path.join(this_path, "data")
+    if root_path=="":
+        root_path=obj_root_path
+        obj_name="face_mesh.obj"
+
     obj_mesh = Mesh()
     TinyLoadOBJ(obj_mesh, os.path.join(root_path,obj_name))
     LoadTexture(root_path, obj_mesh)
@@ -82,7 +89,7 @@ def CrazyVI_Test():
     gui = PyPangolin(button_list=["next","pre"])
     render = PyRender()
 
-    rendering_mesh = ReadObjMesh("packages/CrazyCPPs/data","face_mesh.obj")
+    rendering_mesh = ReadObjMesh()
     pyCrazyCPP.BaseOperator__Compute_Face_Vertices_Normals(rendering_mesh)
     pyCrazyCPP.BaseOperator__NormalizeVertices(rendering_mesh)
     render.Upload(rendering_mesh)
