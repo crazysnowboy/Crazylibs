@@ -59,6 +59,7 @@ def git_add_commit_push(cmd_list=[]):
         cmd_list = [
             "git config --global credential.helper store",
             "git status",
+            "git branch -D temp",
             "git branch temp",
             "git checkout temp",
             "git add " + add_file_info,
@@ -66,6 +67,7 @@ def git_add_commit_push(cmd_list=[]):
             "git commit -m 'modified " + add_file_info + "'",
             "git pull origin master:test",
             "git checkout master",
+            "git branch -D test",
             "git merge test",
             "git merge temp",
             "git checkout master",
