@@ -35,7 +35,23 @@ def list_curren_dir(root,prefix=None):
         return dirs
     else:
         return []
+    
+def list_curren_items(root,prefix=None):
 
+    item_list=[]
+    if os.path.exists(root)==False:
+        return []
+    contents =os.listdir(root)
+    for content in contents:
+        sub_path = os.path.join(root, content)
+        if os.path.isdir(sub_path)==True:
+            item_list.append(("dir",content))
+        else:
+            item_list.append(("file",content))
+    if prefix is None:
+        return item_list
+    else:
+        return []
 
 def list_all_dirs(root, dirs_list,empty_dirs_list):
     # print(path)

@@ -6,15 +6,12 @@ from .core.IO import *
 from .core.deploy import *
 from .core.math import *
 from .core.vi import *
-
-
+from .core.log import *
 
 
 
 def CreateSubModule(create_file_name,dirs_list=["core"]):
-
-
-
+    file_dir = get_this_path(__file__)
     create_file_path = get_this_path(__file__)
     import_str = "from "
     for sub_dir in dirs_list:
@@ -37,6 +34,8 @@ def CreateSubModule(create_file_name,dirs_list=["core"]):
         f.write("import numpy as np")
         pass
 
+
+    this_file_path = os.path.abspath(__file__)
     this_file = ReadLines2OneLine(this_file_path)
     this_file = import_str + this_file
     WriteStringLine(this_file_path,this_file)
