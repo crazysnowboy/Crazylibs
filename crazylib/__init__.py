@@ -73,6 +73,7 @@ def git_add_commit_push(cmd_list=[]):
         ]
 
     for cmd in cmd_list:
+        print("crazy_cmd = ",cmd)
         os.system(cmd)
 
 def git_pull(cmd_list=[]):
