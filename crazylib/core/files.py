@@ -56,28 +56,59 @@ def list_file_in_dir(path, list_name,suffix):
 
 
 
-def get_file_list(data_root_path, suffix,only_name=False):
+def get_file_list(data_root_path, suffix=None,only_name=False):
     file_paths_list = []
     filelist = sorted(os.listdir(data_root_path))
     for idx, file_name in enumerate(filelist):
 
-        if file_name.endswith(suffix):
+        if suffix is not None :
+            if file_name.endswith(suffix):
+                if only_name==False:
+                    file_path = os.path.join(data_root_path, file_name)
+                else:
+                    file_path = file_name
+    
+                file_paths_list.append(file_path)
+        else:
 
-            if only_name==False:
+            if only_name == False:
                 file_path = os.path.join(data_root_path, file_name)
             else:
                 file_path = file_name
-
             file_paths_list.append(file_path)
-
 
     return file_paths_list
 
 
 def copy_file(srcfile, dstfile):
     import shutil
-    shutil.copyfile(srcfile, dstfile)
+    try:
+        shutil.copyfile(srcfile, dstfile)
+    except OSError as err:
+        print("copy ",srcfile,"-------->",dstfile)
+        print("OS error: {0}".format(err))
 
+def copy_files_in_dir(src_path,dst_path):
+    dst_file_num = len(get_file_list(dst_path))
+    print("dst_path num = ",dst_file_num)
+
+
+    from tqdm import tqdm
+    file_name_list = get_file_list(src_path)
+    print("src_path num = ",len(file_name_list))
+
+    for idx in tqdm(range(len(file_name_list)),desc="copy: "):
+        img_name = file_name_list[idx]
+        src_file = os.path.join(src_path,img_name)
+        dst_file = os.path.join(dst_path,img_name)
+        copy_file(src_file,dst_file)
+    
+    dst_plus_src_num = dst_file_num + len(file_name_list)
+    
+    print("dst_plus_src_num ",dst_plus_src_num)
+    print("res dst_path num = ",len(get_file_list(dst_path)))
+
+    
 def copy_files_main():
     img_path = ""
     dst_path=""

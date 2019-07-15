@@ -1,3 +1,5 @@
+from .core.latex_manager import *
+from .core.sftp import *
 
 from .core.file_manager import *
 from .core.basics import *
@@ -102,6 +104,9 @@ def deploy():
 def Test():
 
     CreateSubModule(["core"],"Expression.py")
+
+
+
 
 
 
