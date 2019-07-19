@@ -88,3 +88,6 @@ def ReadMatbin(root_path):
     ndarray = DMat2Ndarray(dmat)
     return ndarray
 
+def SaveMatbin(root_path,ndarray_data):
+    dmat = Ndarray2DMat(ndarray_data)
+    SaveDMat2BinaryCVMat(root_path,dmat)

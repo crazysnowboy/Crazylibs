@@ -102,4 +102,12 @@ def quaternion_to_euler(quaternion):
     t3 = +2.0 * (w * z + x * y)
     t4 = +1.0 - 2.0 * (y * y + z * z)
     yaw = math.atan2(t3, t4)
-    return np.array([yaw, pitch, roll])
+
+    # res = np.array([yaw, roll, pitch])
+    # res = np.array([yaw, pitch, roll])
+    # res = np.array([pitch,yaw, roll])
+    # res = np.array([pitch,roll, yaw])
+    res = np.array([roll,pitch, yaw])
+    # res = np.array([roll,yaw, pitch])
+
+    return res

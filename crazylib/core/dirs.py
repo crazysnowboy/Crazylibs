@@ -15,8 +15,8 @@ def makedirs(path):
     if os.path.exists(path) is False:
         os.makedirs(path)
 def remove_dir(path):
-    os.removedirs(path)
-
+    # os.removedirs(path)
+    os.system("rm -rf "+path)
 def list_curren_dir(root,prefix=None):
 
     dirs=[]
