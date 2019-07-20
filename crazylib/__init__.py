@@ -1,3 +1,4 @@
+from .core.tmux import *
 from .core.latex_manager import *
 from .core.sftp import *
 
@@ -104,6 +105,8 @@ def deploy():
 def Test():
 
     CreateSubModule(["core"],"Expression.py")
+
+
 
 
 
