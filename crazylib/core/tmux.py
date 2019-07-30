@@ -37,3 +37,9 @@ class TmuxManager():
             if sess_id not in ignore_ids:
                 print(sess, "can be killed")
                 sess.attached_window.kill_window()
+    def close_sess_by_name(self,sess_name):
+        for idx, sess in enumerate(self.list_serssions()):
+            string_s = str(sess)
+            if sess_name in string_s:
+                print(sess, "can be killed")
+                sess.attached_window.kill_window()
