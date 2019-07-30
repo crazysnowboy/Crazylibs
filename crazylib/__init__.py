@@ -49,16 +49,17 @@ def git_add_commit_push(cmd_list=[]):
     this_path = get_file_dir(get_this_path())
     os.chdir(os.path.join(this_path, "../"))
 
-    os.system("git log")
-    os.system("git status >log.txt")
-    log_str_line_list = ReadLines("log.txt")
-
-    add_file_info = ""
-    for log_str in log_str_line_list:
-        if "modified:" in log_str:
-            add_file_info += (log_str.replace("modified:", "").strip() + " ")
 
     if len(cmd_list) == 0:
+        os.system("git log")
+        os.system("git status >log.txt")
+        log_str_line_list = ReadLines("log.txt")
+
+        add_file_info = ""
+        for log_str in log_str_line_list:
+            if "modified:" in log_str:
+                add_file_info += (log_str.replace("modified:", "").strip() + " ")
+
         cmd_list = [
             "git config --global credential.helper store",
             "git status",
