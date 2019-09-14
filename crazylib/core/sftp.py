@@ -2,9 +2,9 @@ import numpy as np
 
 
 class SFTP_Manager():
-    def __init__(self,ip,user,passwd):
+    def __init__(self,ip,user,passwd,port):
         import paramiko
-        self._tansporter = paramiko.Transport((ip, 22))
+        self._tansporter = paramiko.Transport((ip, port))
         self._tansporter.connect(username=user, password=passwd)
         self._sftp = paramiko.SFTPClient.from_transport(self._tansporter)
 
