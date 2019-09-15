@@ -13,7 +13,7 @@ class CrazyDict():
             self.from_json_file(json_file)
 
     def traverse_dict_to_get(self, dict_data, key_search):
-        if type(dict_data) is ConfigureTool:
+        if type(dict_data) is CrazyDict:
             key_list = dict_data.config_dict.keys()
         elif type(dict_data) is dict:
             key_list = dict_data.keys()
@@ -27,7 +27,7 @@ class CrazyDict():
             if key == key_search:
                 # print("=====================")
                 if type(ele) is dict:
-                    return ConfigureTool(config_dict=ele)
+                    return CrazyDict(config_dict=ele)
                 else:
                     return ele
             else:
@@ -40,7 +40,7 @@ class CrazyDict():
         for key in dict_data.keys():
             ele = dict_data[key]
             if key == key_search:
-                if type(ele) is dict and type(value) is ConfigureTool:
+                if type(ele) is dict and type(value) is CrazyDict:
                     dict_data[key] = value.get_dict()
                 else:
                     dict_data[key]=value
