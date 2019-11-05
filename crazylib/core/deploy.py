@@ -28,9 +28,9 @@ def deploy_link_to_annconda(src_lib_path,dst_lib_name):
             dst_lib_path = os.path.join(site_package_dir,dst_lib_name)
 
             cmd_rm ="rm -rf " +dst_lib_path
-            cmd_link = "ln -s " + src_lib_path +" " +dst_lib_path
             print(cmd_rm)
-            print(cmd_link)
-
             os.system(cmd_rm)
+            
+            cmd_link = "ln -s " + src_lib_path +" " +dst_lib_path
+            print(cmd_link)
             os.system(cmd_link)

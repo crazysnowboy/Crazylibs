@@ -10,6 +10,10 @@ class TmuxManager():
             return sess_list
         except Exception:
             return []
+    def get_panel_from_sess(self,sess):
+        window = sess.attached_window
+        pane = window.list_panes()[0]
+        return pane
 
     def kill_all_sessions(self):
         try:
@@ -41,5 +45,36 @@ class TmuxManager():
         for idx, sess in enumerate(self.list_serssions()):
             string_s = str(sess)
             if sess_name in string_s:
+                print(sess, "can be killed")
+                sess.attached_window.kill_window()
+                
+    def close_sess_by_filter(self,include_names=[],exclude_names=[],start_sess_id=0):
+        for idx, sess in enumerate(self.list_serssions()):
+            string_s = str(sess)
+            print(string_s)
+
+            exclude_flag=False
+            for ex_e in exclude_names:
+                if ex_e in string_s:
+                    exclude_flag=True
+                    break
+                    
+            if exclude_flag==True:
+                continue
+             
+            inc_flag=True   
+            for in_e in include_names:
+                if in_e in string_s:
+                    inc_flag=True
+                    break
+                else:
+                    inc_flag=False
+            
+            if inc_flag == False:
+                continue
+                
+                      
+            sess_id = int(string_s.split("$")[-1].split(" ")[0])
+            if sess_id >= start_sess_id:
                 print(sess, "can be killed")
                 sess.attached_window.kill_window()
