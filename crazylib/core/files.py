@@ -12,6 +12,8 @@ def GetFileList(root_path, sub_dirs=[""],suffix=None):
     for sub_dir in sub_dirs:
         path = os.path.join(root_path, sub_dir)
         list_file_in_dir(path, file_path_list,suffix)
+
+    file_path_list.sort()
     return file_path_list
 
 
@@ -82,11 +84,8 @@ def get_file_list(data_root_path, suffix=None,only_name=False):
 
 def copy_file(srcfile, dstfile):
     import shutil
-    try:
-        shutil.copyfile(srcfile, dstfile)
-    except OSError as err:
-        print("copy ",srcfile,"-------->",dstfile)
-        print("OS error: {0}".format(err))
+    shutil.copyfile(srcfile, dstfile)
+
 
 def copy_files_in_dir(src_path,dst_path):
     dst_file_num = len(get_file_list(dst_path))
