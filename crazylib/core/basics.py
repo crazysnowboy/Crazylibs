@@ -172,13 +172,8 @@ def Dict2Ndarray(dict,flag):
     return  array
 
 
-def PrintDict(dict,flag=""):
-    str_out = "%10s---->"%flag
-    for key in dict.keys():
-        if "Brow" in key:
-            dat =dict[key]
-            str_out = str_out + " %8d " % int(dat)
-    print(str_out)
+def PrintDict(dict_data,flag=""):
+    print(str(json.dumps(dict_data, indent=4, sort_keys=True)))
 
 def Equal(v1,v2):
     epslo =0.0001
