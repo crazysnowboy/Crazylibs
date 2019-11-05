@@ -121,3 +121,4 @@ def copy_files_main():
         src_file = os.path.join(img_path,img_name)
         dst_file = os.path.join(dst_path,img_name)
         crazylib.copy_file(src_file,dst_file)
+

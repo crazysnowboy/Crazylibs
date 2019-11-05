@@ -13,7 +13,10 @@ def get_this_path(file=__file__):
 
 def makedirs(path):
     if os.path.exists(path) is False:
-        os.makedirs(path)
+        try:
+            os.makedirs(path)
+        except:
+            pass
 def remove_dir(path):
     # os.removedirs(path)
     os.system("rm -rf "+path)

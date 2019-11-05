@@ -11,10 +11,11 @@ class SFTP_Manager():
     def __del__(self):
         self._tansporter.close()
 
-    def list_dir(self,root_path):
+    def list_dir(self,root_path,show=True):
         dirs = self._sftp.listdir(root_path)
-        for dir in dirs:
-            print(dir)
+        if show is True:
+            for dir in dirs:
+                print(dir)
 
         return dirs
 
