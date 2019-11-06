@@ -29,6 +29,16 @@ def ReadLines(file_path):
     lines = in_file.readlines()
     return lines
 
+def ReadLines2List(file_path,skip_n,dtype):
+    data_list=[]
+    with open(file_path, 'r') as f:
+        lines = f.readlines()
+        for i in range(skip_n,len(lines)):
+            line = lines[i].strip()
+            data_list.append(dtype(line))
+
+    return data_list
+
 def ReadLines2oneLine(file_path):
 
     line_out_str=""
