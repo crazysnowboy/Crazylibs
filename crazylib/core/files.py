@@ -82,6 +82,29 @@ def get_file_list(data_root_path, suffix=None,only_name=False):
     return file_paths_list
 
 
+def get_file_list_append(data_root_path,file_paths_list, suffix=None, only_name=False):
+    filelist = sorted(os.listdir(data_root_path))
+    for idx, file_name in enumerate(filelist):
+
+        if suffix is not None:
+            if file_name.endswith(suffix):
+                if only_name == False:
+                    file_path = os.path.join(data_root_path, file_name)
+                else:
+                    file_path = file_name
+
+                file_paths_list.append(file_path)
+        else:
+
+            if only_name == False:
+                file_path = os.path.join(data_root_path, file_name)
+            else:
+                file_path = file_name
+            file_paths_list.append(file_path)
+
+    return file_paths_list
+
+
 def copy_file(srcfile, dstfile):
     import shutil
     shutil.copyfile(srcfile, dstfile)
