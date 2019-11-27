@@ -230,8 +230,22 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-def print_error(info):
-    print(bcolors.FAIL+info+bcolors.ENDC)
 
-def print_warning(info):
-    print(bcolors.WARNING+info+bcolors.ENDC)
+
+
+def print_error(*infos):
+    info_str=""
+    for info in infos:
+        info_str+=str(info)
+    print(bcolors.FAIL+info_str+bcolors.ENDC)
+def print_warning(*infos):
+    info_str=""
+    for info in infos:
+        info_str+=str(info)
+    print(bcolors.WARNING+info_str+bcolors.ENDC)
+
+def print_info(*infos):
+    info_str=""
+    for info in infos:
+        info_str+=str(info)
+    print(bcolors.HEADER+info_str+bcolors.ENDC)
