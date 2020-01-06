@@ -64,12 +64,13 @@ def Write_String_list_to_file(text_list,save_path,cotype="utf-8"):
 
 
 
-def ReadLines2OneLine(file_path):
+def ReadLines2OneLine(file_path,skip_line = 0):
     line_out_str=""
     with open(file_path, 'r',encoding=FileType(file_path)) as in_file:
         lines = in_file.readlines()
-        for l in lines:
-            line_out_str = line_out_str + l
+        for idx,l in enumerate(lines):
+            if idx >= skip_line:
+                line_out_str = line_out_str + l
 
     return line_out_str
 
@@ -190,5 +191,6 @@ def read_bin_data(file_path, byte_n =4):
 
             byte_data = f.read(byte_n)
 
-
         return data_list
+
+
