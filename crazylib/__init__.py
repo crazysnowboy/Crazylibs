@@ -11,6 +11,7 @@ from .core.deploy import *
 from .core.math import *
 from .core.vi import *
 from .core.log import *
+from .core.json_dict_manager import *
 
 
 
