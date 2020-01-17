@@ -1,12 +1,14 @@
 import os
 import json
+import datetime
+from collections import OrderedDict
 
 class JsonDictManager():
     def __init__(self,data_dict_init=None):
-        self.data_dict = dict()
+        self.data_dict = OrderedDict()
         self.force_init_keys=[]
         if data_dict_init is not None:
-            self.data_dict = data_dict_init
+            self.data_dict = OrderedDict(data_dict_init)
         self.crazy_key_list=[]
         self.log_color={
                         "HEADER":'\033[95m',
@@ -44,7 +46,7 @@ class JsonDictManager():
         for key in dict_data.keys():
             assert type(key)==str
             self.crazy_key_list.append(key)
-            if type(dict_data[key]) is dict:
+            if type(dict_data[key]) is OrderedDict:
                 self._traverse_dict_to_get_crazy_keys(dict_data[key], key)
 
         return self.crazy_key_list
@@ -60,7 +62,7 @@ class JsonDictManager():
             assert type(key)==str
             new_key = parent_key+":"+key
             self.crazy_key_list.append(new_key)
-            if type(dict_data[key]) is dict:
+            if type(dict_data[key]) is OrderedDict:
                 self._traverse_dict_to_get_crazy_keys(dict_data[key], new_key)
     def _traverse_dict_to_set_from_crazy_keys(self,dict_data, parent_key,crazy_key,value):
         for key in dict_data.keys():
@@ -68,7 +70,7 @@ class JsonDictManager():
             new_key = parent_key+":"+key
             if new_key==crazy_key:
                 return self._set_exist_key_value(dict_data,key,value)
-            if type(dict_data[key]) is dict:
+            if type(dict_data[key]) is OrderedDict:
                 self._traverse_dict_to_set_from_crazy_keys(dict_data[key], new_key,crazy_key,value)
 
         return False
@@ -91,7 +93,7 @@ class JsonDictManager():
             assert type(key)==str
             if key==crazy_key:
                 return self._set_exist_key_value(dict_data,key,value)
-            elif type(dict_data[key]) is dict:
+            elif type(dict_data[key]) is OrderedDict:
                 ret = self._traverse_dict_to_set_from_crazy_keys(dict_data[key], key,crazy_key,value)
                 if ret == True:
                     return True
@@ -102,7 +104,7 @@ class JsonDictManager():
             for idx,key in enumerate(key_list):
                 if idx < len(key_list) - 1:
                     if key not in this_dict.keys():
-                        this_dict[key] = {}
+                        this_dict[key] = OrderedDict()
                     this_dict =  this_dict[key]
                 else:
                     this_dict[key] = value
@@ -111,12 +113,12 @@ class JsonDictManager():
         dict_keys = dict_data.keys()
         for idx,key in enumerate(dict_keys):
             if key == key_search:
-                if type(dict_data[key]) is dict:
+                if type(dict_data[key]) is OrderedDict:
                     return JsonDictManager(data_dict_init=dict_data[key])
                 else:
                     return dict_data[key]
 
-            elif type(dict_data[key]) is dict:
+            elif type(dict_data[key]) is OrderedDict:
                 res = self._traverse_dict_to_get_value(dict_data[key], key_search)
                 if res is not None:
                     return res
@@ -125,7 +127,6 @@ class JsonDictManager():
     def _find_crazy_key_in_key_list(self,key_search,with_raise=False):
 
         crazy_key_list = self.get_crazy_keys_list()
-
         crazy_key_candidate_list = []
         for crazy_key in crazy_key_list:
             if key_search in crazy_key:
@@ -164,7 +165,7 @@ class JsonDictManager():
     def _traverse_key_list_to_get_value(self, key_search):
         crazy_key = self._find_crazy_key_in_key_list(key_search,with_raise=True)
         res = self._get_value_from_crazy_key(crazy_key)
-        if type(res) is dict:
+        if type(res) is OrderedDict:
             return JsonDictManager(data_dict_init=res)
         else:
             return res
@@ -220,7 +221,7 @@ class JsonDictManager():
     def from_json_file(self, path,mode="overwrite"):
         with open(path, 'r') as f:
             if mode=="overwrite":
-                tmp_dict = json.load(fp=f)
+                tmp_dict = json.load(fp=f,object_pairs_hook=OrderedDict)
 
                 self.data_dict =  self.force_key_settting(tmp_dict)
 
