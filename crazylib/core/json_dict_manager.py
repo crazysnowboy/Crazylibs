@@ -187,8 +187,11 @@ class JsonDictManager():
     def clear(self):
         self.data_dict={}
 
-    def keys(self):
+    def crazy_keys(self):
         return self.get_crazy_keys_list()
+
+    def keys(self):
+        return self.data_dict.keys()
 
     def __str__(self):
         return str(json.dumps(self.data_dict, indent=4,sort_keys=True))
