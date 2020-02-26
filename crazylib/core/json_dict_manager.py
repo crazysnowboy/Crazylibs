@@ -223,6 +223,7 @@ class JsonDictManager():
         return self.__call__(item)
 
     def __setitem__(self, key_input, value):
+        value = self._traverse_convert_dict_to_ordered_dict(value)
         key_list = key_input.split(":")
         if len(key_list)>1:
             self._set_value_from_crazy_key(key_input,value)
