@@ -1,10 +1,5 @@
 import os
-import numpy as np
-import collections
-import chardet
-import json
-import matplotlib.pyplot as plt
-from scipy import interpolate
+
 
 
 def GetFileList(root_path, sub_dirs=[""],suffix=None):
@@ -34,6 +29,7 @@ def GetFileSize(dir_list):
 
 
 def FileType(file):
+    import chardet
     encode_type = chardet.detect(open(file, 'rb').read())["encoding"]
     # print("encode_type =",encode_type)
 

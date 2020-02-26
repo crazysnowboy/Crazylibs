@@ -1,7 +1,4 @@
-import os
 import numpy as np
-import collections
-import chardet
 import json
 from .files import *
 import struct

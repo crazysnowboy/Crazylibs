@@ -1,10 +1,7 @@
 import os
 import numpy as np
-import collections
-import chardet
+
 import json
-import matplotlib.pyplot as plt
-from scipy import interpolate
 import time
 import datetime
 import copy
