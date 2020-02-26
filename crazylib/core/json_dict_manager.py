@@ -176,6 +176,15 @@ class JsonDictManager():
         else:
             self.data_dict[key_setting] = value
 
+    def _traverse_convert_dict_to_ordered_dict(self, dict_data):
+        if hasattr(dict_data, "keys"):
+            for key in dict_data.keys():
+                if hasattr(dict_data[key],"keys"):
+                    dict_data[key] = self._traverse_convert_dict_to_ordered_dict(dict_data[key])
+            if type(dict_data) is dict:
+                dict_data = OrderedDict(dict_data)
+        return dict_data
+
     def _get_value_from_key(self,key):
         return self._traverse_key_list_to_get_value(key)
 
