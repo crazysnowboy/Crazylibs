@@ -5,10 +5,15 @@ from collections import OrderedDict
 
 class JsonDictManager():
     def __init__(self,data_dict_init=None):
-        self.data_dict = OrderedDict()
         self.force_init_keys=[]
         if data_dict_init is not None:
-            self.data_dict = OrderedDict(data_dict_init)
+            if type(data_dict_init) is not OrderedDict:
+                self.data_dict = OrderedDict(data_dict_init)
+            else:
+                self.data_dict = data_dict_init
+        else:
+            self.data_dict = OrderedDict()
+
         self.crazy_key_list=[]
         self.log_color={
                         "HEADER":'\033[95m',
