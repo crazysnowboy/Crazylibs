@@ -1,10 +1,4 @@
-import os
-import numpy as np
-import collections
-import chardet
-import json
-import matplotlib.pyplot as plt
-from scipy import interpolate
+
 from .basics import *
 import math
 def my_smooth_3rd(x):
@@ -30,6 +24,8 @@ def my_smooth_3rd(x):
 
 
 def GenerateWeight(n,fre):
+    from scipy import interpolate
+
     ratial = 0.0
     t_step = 0
     base_n = 10000

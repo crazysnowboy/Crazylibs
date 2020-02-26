@@ -1,9 +1,5 @@
 import os
 import numpy as np
-import collections
-import chardet
-import json
-from scipy import interpolate
 
 
 def get_this_path(file=__file__):
@@ -106,6 +102,8 @@ def ParsePath(file_path,ifPrint=False):
 
 
 def GenerateWeight(n,fre):
+    from scipy import interpolate
+
     ratial = 0.0
     t_step = 0
     base_n = 10000

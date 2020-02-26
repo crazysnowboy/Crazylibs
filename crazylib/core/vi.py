@@ -1,8 +1,9 @@
-import matplotlib.pyplot as plt
 import numpy as np
 import copy
 
 def DrawLine(y,flag,ymin,ymax):
+    import matplotlib.pyplot as plt
+
     x = np.linspace(0, y.shape[0], y.shape[0])
     plt.plot(x, y)
     plt.xlabel('x label')

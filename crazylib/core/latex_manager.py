@@ -1,17 +1,16 @@
-import numpy as np
 
-from pylatex import Document, Section, Subsection, Tabular, Math, TikZ, Axis, \
-    Plot, Figure, Matrix, Alignat
-from pylatex.utils import italic
+
 
 
 class LatexManager():
     def __init__(self,doc_file_name):
+        from pylatex import Document
         self.doc_file_name = doc_file_name
         geometry_options = {"tmargin": "1cm", "lmargin": "1cm"}
         self.doc = Document(geometry_options=geometry_options)
 
     def add_image(self,image_filename,title_name):
+        from pylatex import Subsection,Figure
 
         with self.doc.create(Subsection(title_name)):
             with self.doc.create(Figure(position='h!')) as kitten_pic:
