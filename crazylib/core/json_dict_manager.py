@@ -5,14 +5,11 @@ from collections import OrderedDict
 
 class JsonDictManager():
     def __init__(self,data_dict_init=None):
-        self.force_init_keys=[]
+        self.__force_init_keys=[]
         if data_dict_init is not None:
-            if type(data_dict_init) is not OrderedDict:
-                self.data_dict = OrderedDict(data_dict_init)
-            else:
-                self.data_dict = data_dict_init
+            self.set_from_dict(data_dict_init)
         else:
-            self.data_dict = OrderedDict()
+            self.__data_dict = OrderedDict()
 
         self.crazy_key_list=[]
         self.log_color={
@@ -26,6 +23,14 @@ class JsonDictManager():
                         "UNDERLINE":'\033[4m'
                         }
 
+
+    def set_force_keys(self,keys):
+        self.__force_init_keys = keys
+    def set_from_dict(self,input_dict):
+        if type(input_dict) is not OrderedDict:
+            self.__data_dict = self._traverse_convert_dict_to_ordered_dict(input_dict)
+        else:
+            self.__data_dict = input_dict
 
     def _log_i(self,*infos):
         info_str=""
@@ -47,7 +52,7 @@ class JsonDictManager():
 
     def get_crazy_keys_list(self):
         self.crazy_key_list=[]
-        dict_data = self.data_dict
+        dict_data = self.__data_dict
         for key in dict_data.keys():
             assert type(key)==str
             self.crazy_key_list.append(key)
@@ -80,7 +85,7 @@ class JsonDictManager():
 
         return False
     def _get_value_from_crazy_key(self,crazy_key):
-        this_dict = self.data_dict
+        this_dict = self.__data_dict
         key_list = crazy_key.split(":")
         for idx, key in enumerate(key_list):
             if idx < len(key_list) - 1:
@@ -92,7 +97,7 @@ class JsonDictManager():
                     raise ValueError("can not find crazy key:",crazy_key," in key:",key)
                 return this_dict[key]
     def _set_value_from_crazy_key(self,crazy_key,value):
-        dict_data = self.data_dict
+        dict_data = self.__data_dict
         ret = False
         for idx,key in enumerate(dict_data.keys()):
             assert type(key)==str
@@ -179,15 +184,15 @@ class JsonDictManager():
         if crazy_key is not None:
             self._set_value_from_crazy_key(crazy_key,value)
         else:
-            self.data_dict[key_setting] = value
+            self.__data_dict[key_setting] = value
 
     def _traverse_convert_dict_to_ordered_dict(self, dict_data):
         if hasattr(dict_data, "keys"):
+            if type(dict_data) is dict:
+                dict_data = OrderedDict(dict_data)
             for key in dict_data.keys():
                 if hasattr(dict_data[key],"keys"):
                     dict_data[key] = self._traverse_convert_dict_to_ordered_dict(dict_data[key])
-            if type(dict_data) is dict:
-                dict_data = OrderedDict(dict_data)
         return dict_data
 
     def _get_value_from_key(self,key):
@@ -197,18 +202,18 @@ class JsonDictManager():
         self._traverse_key_list_to_set_value(key,value)
 
     def get_dict(self):
-        return self.data_dict
+        return self.__data_dict
     def clear(self):
-        self.data_dict={}
+        self.__data_dict={}
 
     def crazy_keys(self):
         return self.get_crazy_keys_list()
 
     def keys(self):
-        return self.data_dict.keys()
+        return self.__data_dict.keys()
 
     def __str__(self):
-        return str(json.dumps(self.data_dict, indent=4,sort_keys=True))
+        return str(json.dumps(self.__data_dict, indent=4,sort_keys=True))
 
 
     def __call__(self, key_input):
@@ -234,27 +239,27 @@ class JsonDictManager():
     def to_json_file(self, path):
         self._log_i("save to: ",path)
         with open(path, 'w') as f:
-            json.dump(self.data_dict, f, indent=4,sort_keys=True)
+            json.dump(self.__data_dict, f, indent=4,sort_keys=True)
 
     def from_json_file(self, path,mode="overwrite"):
         with open(path, 'r') as f:
             if mode=="overwrite":
                 tmp_dict = json.load(fp=f,object_pairs_hook=OrderedDict)
 
-                self.data_dict =  self.force_key_settting(tmp_dict)
+                self.__data_dict =  self.force_key_settting(tmp_dict)
 
             elif mode=="add":
                 tmp_dict = json.load(fp=f)
                 item_name = os.path.basename(path).split(".")[0]
-                self.data_dict[item_name] = tmp_dict
+                self.__data_dict[item_name] = tmp_dict
 
     def force_key_settting(self,tmp_dict):
         tmp_pack = JsonDictManager(tmp_dict)
         ForceSetting=False
-        for force_key in self.force_init_keys:
+        for force_key in self.__force_init_keys:
             ForceSetting = True
             self._log_i("force setting key:",force_key)
-            value = JsonDictManager(self.data_dict)[force_key]
+            value = JsonDictManager(self.__data_dict)[force_key]
             if type(value) is JsonDictManager:
                 value = value.get_dict()
             tmp_pack[force_key]=value
