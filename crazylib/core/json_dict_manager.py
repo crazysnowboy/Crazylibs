@@ -249,7 +249,7 @@ class JsonDictManager():
                 self.__data_dict =  self.force_key_settting(tmp_dict)
 
             elif mode=="add":
-                tmp_dict = json.load(fp=f)
+                tmp_dict = json.load(fp=f,object_pairs_hook=OrderedDict)
                 item_name = os.path.basename(path).split(".")[0]
                 self.__data_dict[item_name] = tmp_dict
 
