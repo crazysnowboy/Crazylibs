@@ -48,7 +48,7 @@ class TmuxManager():
                 print(sess, "can be killed")
                 sess.attached_window.kill_window()
                 
-    def close_sess_by_filter(self,include_names=[],exclude_names=[],start_sess_id=0):
+    def close_sess_by_filter(self,include_names=[],exclude_names=[],start_sess_id=0, idx_flag_name=None):
         for idx, sess in enumerate(self.list_serssions()):
             string_s = str(sess)
             print(string_s)
@@ -60,6 +60,7 @@ class TmuxManager():
                     break
                     
             if exclude_flag==True:
+                print("exclude:",exclude_flag, " in ",string_s)
                 continue
              
             inc_flag=True   
@@ -71,10 +72,14 @@ class TmuxManager():
                     inc_flag=False
             
             if inc_flag == False:
+                print("include:",include_names, " not in ",string_s)
                 continue
-                
-                      
-            my_id = int(string_s.split("s_")[-1].replace(")",""))
-            if my_id >= start_sess_id:
-                print(sess,my_id,start_sess_id, "can be killed")
-                sess.attached_window.kill_window()
+
+            if idx_flag_name is not None:
+                if idx_flag_name in string_s:
+                    my_id = int(string_s.split(idx_flag_name)[-1].replace(")",""))
+                    if my_id < start_sess_id:
+                        continue
+
+            print(sess, "can be killed")
+            sess.attached_window.kill_window()

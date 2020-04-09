@@ -11,6 +11,7 @@ class JsonDictManager():
         else:
             self.__data_dict = OrderedDict()
 
+        self._is_force_assign = False
         self.crazy_key_list=[]
         self.log_color={
                         "HEADER":'\033[95m',
@@ -65,6 +66,9 @@ class JsonDictManager():
             dict_data[key] = value
             return True
         else:
+            if self._is_force_assign == True:
+                self._is_force_assign = False
+                return True
             raise ValueError("setting exist key =",key," error! type of setting value is: ", type(value), " but value in dict is :",
                              type(dict_data[key]))
     def _traverse_dict_to_get_crazy_keys(self,dict_data, parent_key):
@@ -216,6 +220,7 @@ class JsonDictManager():
         return str(json.dumps(self.__data_dict, indent=4,sort_keys=True))
 
 
+
     def __call__(self, key_input):
         key_list = key_input.split(":")
         if len(key_list)>1:
@@ -225,9 +230,23 @@ class JsonDictManager():
 
 
     def __getitem__(self, item):
-        return self.__call__(item)
+        value = self.__call__(item)
+        if type(value) is JsonDictManager:
+            if "ndarray" in value.keys() and len(value.keys()) == 1:
+                import numpy as np
+                value = np.array(value["ndarray"])
+        return value
+
+    def force_assign(self,key_input,value):
+        self._is_force_assign = True
+        self.__setitem__(key_input,value)
 
     def __setitem__(self, key_input, value):
+        import numpy as np
+        if type(value) is np.ndarray:
+            value = {
+                "ndarray":value.tolist(),
+            }
         value = self._traverse_convert_dict_to_ordered_dict(value)
         key_list = key_input.split(":")
         if len(key_list)>1:
