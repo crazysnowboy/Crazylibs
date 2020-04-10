@@ -4,7 +4,7 @@ import datetime
 from collections import OrderedDict
 
 class JsonDictManager():
-    def __init__(self,data_dict_init=None):
+    def __init__(self,data_dict_init=None,json_file=None):
         self.__force_init_keys=[]
         if data_dict_init is not None:
             self.set_from_dict(data_dict_init)
@@ -23,7 +23,8 @@ class JsonDictManager():
                         "BOLD":'\033[1m',
                         "UNDERLINE":'\033[4m'
                         }
-
+        if json_file is not None:
+            self.from_json_file(json_file)
 
     def set_force_keys(self,keys):
         self.__force_init_keys = keys
@@ -200,6 +201,30 @@ class JsonDictManager():
                     dict_data[key] = self._traverse_convert_dict_to_ordered_dict(dict_data[key])
         return dict_data
 
+    def _traverse_convert_ndarray_to_list(self, dict_data):
+        import numpy as np
+        if hasattr(dict_data, "keys"):
+            for key in dict_data.keys():
+                if hasattr(dict_data[key], "keys"):
+                    dict_data[key] = self._traverse_convert_ndarray_to_list(dict_data[key])
+                elif type(dict_data[key]) is np.ndarray:
+                    dict_data[key] = {
+                        "ndarray":dict_data[key].tolist()
+                    }
+        return dict_data
+
+    def _traverse_convert_ndarray_list_to_ndarray(self, dict_data):
+        import numpy as np
+        for key in dict_data.keys():
+            if hasattr(dict_data[key], "keys"):
+                if "ndarray" in dict_data[key].keys() and len(dict_data[key].keys()) == 1:
+                    dict_data[key] = np.array(dict_data[key]["ndarray"])
+                else:
+                    dict_data[key] = self._traverse_convert_ndarray_list_to_ndarray(dict_data[key])
+        return dict_data
+
+
+
     def _get_value_from_key(self,key):
         return self._traverse_key_list_to_get_value(key)
 
@@ -232,10 +257,6 @@ class JsonDictManager():
 
     def __getitem__(self, item):
         value = self.__call__(item)
-        if type(value) is JsonDictManager:
-            if "ndarray" in value.keys() and len(value.keys()) == 1:
-                import numpy as np
-                value = np.array(value["ndarray"])
         return value
 
     def force_assign(self,key_input,value):
@@ -243,11 +264,6 @@ class JsonDictManager():
         self.__setitem__(key_input,value)
 
     def __setitem__(self, key_input, value):
-        import numpy as np
-        if type(value) is np.ndarray:
-            value = {
-                "ndarray":value.tolist(),
-            }
         value = self._traverse_convert_dict_to_ordered_dict(value)
         key_list = key_input.split(":")
         if len(key_list)>1:
@@ -257,15 +273,16 @@ class JsonDictManager():
 
 
     def to_json_file(self, path):
-        # self._log_i("save to: ",path)
+        import copy
+        save_dict_data = copy.deepcopy(self.__data_dict)
+        save_dict_data = self._traverse_convert_ndarray_to_list(save_dict_data)
         with open(path, 'w') as f:
-            json.dump(self.__data_dict, f, indent=4,sort_keys=True)
+            json.dump(save_dict_data, f, indent=4,sort_keys=True)
 
     def from_json_file(self, path,mode="overwrite"):
         with open(path, 'r') as f:
             if mode=="overwrite":
                 tmp_dict = json.load(fp=f,object_pairs_hook=OrderedDict)
-
                 self.__data_dict =  self.force_key_settting(tmp_dict)
 
             elif mode=="add":
@@ -273,13 +290,15 @@ class JsonDictManager():
                 item_name = os.path.basename(path).split(".")[0]
                 self.__data_dict[item_name] = tmp_dict
 
+        self.__data_dict = self._traverse_convert_ndarray_list_to_ndarray(self.__data_dict)
+
     def force_key_settting(self,tmp_dict):
-        tmp_pack = JsonDictManager(tmp_dict)
+        tmp_pack = JsonDictManager(data_dict_init=tmp_dict)
         ForceSetting=False
         for force_key in self.__force_init_keys:
             ForceSetting = True
             self._log_i("force setting key:",force_key)
-            value = JsonDictManager(self.__data_dict)[force_key]
+            value = JsonDictManager(data_dict_init=self.__data_dict)[force_key]
             if type(value) is JsonDictManager:
                 value = value.get_dict()
             tmp_pack[force_key]=value
