@@ -257,7 +257,7 @@ class JsonDictManager():
 
 
     def to_json_file(self, path):
-        self._log_i("save to: ",path)
+        # self._log_i("save to: ",path)
         with open(path, 'w') as f:
             json.dump(self.__data_dict, f, indent=4,sort_keys=True)
 
