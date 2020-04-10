@@ -68,6 +68,7 @@ class JsonDictManager():
         else:
             if self._is_force_assign == True:
                 self._is_force_assign = False
+                dict_data[key] = value
                 return True
             raise ValueError("setting exist key =",key," error! type of setting value is: ", type(value), " but value in dict is :",
                              type(dict_data[key]))

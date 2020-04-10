@@ -33,12 +33,24 @@ def log_out(data,log_level_input):
 
 
 def log_error(*infos):
-    info_str=""
+    import sys
+    CallerFilePath = sys._getframe().f_back.f_code.co_filename
+    CallerfuncName = sys._getframe().f_back.f_code.co_name
+    CallerlineNumber = str(sys._getframe().f_back.f_lineno)
+    info_str = __get_clickable_path(CallerFilePath,CallerlineNumber) + 'in ' + CallerfuncName + ''
+    log_out(bcolors.OKBLUE+info_str+bcolors.ENDC, 0)
+    info_str = __get_time_info()+" I "
     for info in infos:
         info_str+=str(info)
     log_out(bcolors.FAIL+info_str+bcolors.ENDC)
 def log_waring(*infos):
-    info_str=""
+    import sys
+    CallerFilePath = sys._getframe().f_back.f_code.co_filename
+    CallerfuncName = sys._getframe().f_back.f_code.co_name
+    CallerlineNumber = str(sys._getframe().f_back.f_lineno)
+    info_str = __get_clickable_path(CallerFilePath,CallerlineNumber) + 'in ' + CallerfuncName + ''
+    log_out(bcolors.OKBLUE+info_str+bcolors.ENDC, 0)
+    info_str = __get_time_info()+" I "
     for info in infos:
         info_str+=str(info)
     log_out(bcolors.WARNING+info_str+bcolors.ENDC)
@@ -50,8 +62,8 @@ def log_info(*infos,level):
     CallerlineNumber = str(sys._getframe().f_back.f_lineno)
     info_str = __get_clickable_path(CallerFilePath,CallerlineNumber) + 'in ' + CallerfuncName + ''
     log_out(bcolors.OKBLUE+info_str+bcolors.ENDC, level)
-
     info_str = __get_time_info()+" I "
+
     for info in infos:
         info_str+=str(info)
 
