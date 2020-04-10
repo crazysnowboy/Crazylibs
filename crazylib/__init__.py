@@ -1,4 +1,3 @@
-from .core.CrazyDict import *
 from .core.tmux import *
 from .core.latex_manager import *
 from .core.sftp import *

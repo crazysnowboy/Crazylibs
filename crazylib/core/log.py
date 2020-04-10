@@ -59,7 +59,7 @@ def log_waring(*infos):
         info_str+=str(info)
     log_out(bcolors.WARNING+info_str+bcolors.ENDC)
 
-def log_info(*infos,level=0, with_file_info = True):
+def log_info(*infos,level=0, with_file_info = False):
 
     if with_file_info ==True:
         info_str = get_caller_str(2)

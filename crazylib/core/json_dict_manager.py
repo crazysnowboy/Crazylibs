@@ -292,6 +292,17 @@ class JsonDictManager():
 
         self.__data_dict = self._traverse_convert_ndarray_list_to_ndarray(self.__data_dict)
 
+    def from_json_string(self, json_string, add_node_name=None):
+        json_string = json_string.replace("'", "\"")
+        if add_node_name is None:
+            tmp_dict = json.loads(json_string,object_pairs_hook=OrderedDict)
+            self.__data_dict =  self.force_key_settting(tmp_dict)
+        else:
+            assert type(add_node_name) == str
+            tmp_dict = json.loads(json_string,object_pairs_hook=OrderedDict)
+            self.__data_dict[add_node_name] = tmp_dict
+        self.__data_dict = self._traverse_convert_ndarray_list_to_ndarray(self.__data_dict)
+
     def force_key_settting(self,tmp_dict):
         tmp_pack = JsonDictManager(data_dict_init=tmp_dict)
         ForceSetting=False
