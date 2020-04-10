@@ -82,4 +82,5 @@ class TmuxManager():
                         continue
 
             print(sess, "can be killed")
+
             sess.attached_window.kill_window()
