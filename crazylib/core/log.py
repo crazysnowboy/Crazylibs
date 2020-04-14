@@ -45,25 +45,27 @@ def get_caller_str(calling_level):
 
 def log_error(*infos):
     info_str = get_caller_str(2)
-    log_out(bcolors.OKBLUE+info_str+bcolors.ENDC, 0)
-    info_str = __get_time_info()+" I "
+    log_out(bcolors.FAIL+info_str+bcolors.ENDC, 0)
+    info_str = __get_time_info()+" E "
     for info in infos:
         info_str+=str(info)
-    log_out(bcolors.FAIL+info_str+bcolors.ENDC)
+    info_str += "\n"
+    log_out(bcolors.FAIL+info_str+bcolors.ENDC,log_level_input=0)
 def log_waring(*infos):
     info_str = get_caller_str(2)
 
-    log_out(bcolors.OKBLUE+info_str+bcolors.ENDC, 0)
-    info_str = __get_time_info()+" I "
+    log_out(bcolors.WARNING+info_str+bcolors.ENDC, 0)
+    info_str = __get_time_info()+" W "
     for info in infos:
         info_str+=str(info)
-    log_out(bcolors.WARNING+info_str+bcolors.ENDC)
+    info_str += "\n"
+    log_out(bcolors.WARNING+info_str+bcolors.ENDC,log_level_input=0)
 
 def log_info(*infos,level=0, with_file_info = True):
 
     if with_file_info ==True:
         info_str = get_caller_str(2)
-        log_out(bcolors.OKBLUE+info_str+bcolors.ENDC, level)
+        log_out(bcolors.OKGREEN+info_str+bcolors.ENDC, level)
 
     info_str = __get_time_info()+" I "
 
