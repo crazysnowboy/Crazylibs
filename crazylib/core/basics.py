@@ -216,33 +216,3 @@ def get_seg_data(data,pointer,num,return_list=False):
     else:
         return np.array(res_data)
 
-
-class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-
-
-
-
-def print_error(*infos):
-    info_str=""
-    for info in infos:
-        info_str+=str(info)
-    print(bcolors.FAIL+info_str+bcolors.ENDC)
-def print_warning(*infos):
-    info_str=""
-    for info in infos:
-        info_str+=str(info)
-    print(bcolors.WARNING+info_str+bcolors.ENDC)
-
-def print_info(*infos):
-    info_str=""
-    for info in infos:
-        info_str+=str(info)
-    print(bcolors.HEADER+info_str+bcolors.ENDC)
