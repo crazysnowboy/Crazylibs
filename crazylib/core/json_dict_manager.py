@@ -213,7 +213,10 @@ class JsonDictManager():
         return self.__data_dict.keys()
 
     def __str__(self):
-        return str(json.dumps(self.__data_dict, indent=4,sort_keys=True))
+        import copy
+        show_dict_data = copy.deepcopy(self.__data_dict)
+        show_dict_data = self._traverse_convert_ndarray_to_list(show_dict_data)
+        return str(json.dumps(show_dict_data, indent=4,sort_keys=True))
 
 
     def __call__(self, key_input):
