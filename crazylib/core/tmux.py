@@ -1,8 +1,9 @@
 import numpy as np
+from . import libtmux
+
 
 class TmuxManager():
     def __init__(self):
-        import libtmux
         self.server = libtmux.Server()
     def list_serssions(self):
         try:
@@ -25,10 +26,12 @@ class TmuxManager():
         except Exception:
             return False
 
-    def create_session(self,session_name="CrazySession",win_name="CrazyWin"):
-        sess  = self.server.new_session(session_name=session_name,
-                                window_name=win_name)
+    def create_session(self,session_name,win_name,width = 100,height=100):
 
+        sess  = self.server.new_session(session_name=session_name,
+                                        window_name=win_name,
+                                        width=width,
+                                        height=height)
         window = sess.attached_window
         pane = window.list_panes()[0]
         return sess,pane
