@@ -280,7 +280,7 @@ class JsonDictManager():
         save_dict_data = copy.deepcopy(self.__data_dict)
         save_dict_data = self._traverse_convert_ndarray_to_list(save_dict_data)
         with open(path, 'w') as f:
-            json.dump(save_dict_data, f, indent=4,sort_keys=True)
+            json.dump(save_dict_data, f, indent=4,sort_keys=False)
 
     def from_json_file(self, path,mode="overwrite"):
         with open(path, 'r') as f:
