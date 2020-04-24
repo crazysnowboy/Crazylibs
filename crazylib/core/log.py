@@ -68,14 +68,14 @@ def get_caller_str(calling_level):
     return __get_clickable_path(CallerFilePath,CallerlineNumber) + 'in ' + CallerfuncName + ''
 
 
-def log_error(*infos):
+def log_error(*infos,log_level_input=0):
     info_str = get_caller_str(2)
-    log_out(bcolors.FAIL+info_str+bcolors.ENDC, 0)
+    log_out(bcolors.FAIL+info_str+bcolors.ENDC, log_level_input)
     info_str = __get_time_info()+" E "
     for info in infos:
         info_str+=str(info)
     info_str += "\n"
-    log_out(bcolors.FAIL+info_str+bcolors.ENDC,log_level_input=0)
+    log_out(bcolors.FAIL+info_str+bcolors.ENDC,log_level_input=log_level_input)
 def log_waring(*infos):
     info_str = get_caller_str(2)
 
