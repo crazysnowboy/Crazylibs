@@ -158,7 +158,7 @@ class JsonDictManager():
 
         if len(matched_key_crazy_key_list) == 0:
             if with_raise==True:
-                raise ValueError("can not find value with key: ",key_search)
+                raise ValueError("can not find value with key: ",key_search, " in: ",self.get_crazy_keys_list())
             else:
                 return None
         if len(matched_key_crazy_key_list) == 1:

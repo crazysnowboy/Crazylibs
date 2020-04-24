@@ -1,6 +1,6 @@
 import os
 import numpy as np
-
+from .log import log_info
 
 def get_this_path(file=__file__):
     abs_path = os.path.abspath(file)
@@ -8,6 +8,7 @@ def get_this_path(file=__file__):
     return file_dir
 
 def makedirs(path):
+    log_info("makedir: ",path,with_file_info=False)
     if os.path.exists(path) is False:
         try:
             os.makedirs(path)
