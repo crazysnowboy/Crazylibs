@@ -37,7 +37,7 @@ def get_color(color_info):
     elif color_info=="red":
         return '\033[91m'
     else:
-        return '\033['+color_info
+        return '\033['+color_info+"m"
 
     
 
@@ -87,7 +87,26 @@ def log_waring(*infos):
     log_out(bcolors.WARNING+info_str+bcolors.ENDC,log_level_input=0)
 
 def log_info(*infos,level=0, with_file_info = True,color=None):
+    """
+    color: the color info of text from std::cout
+        example:
+            color="green"
+            color="blue"
+            color="red"
+            color="0;31;46"
+            
+        details:
+            数值表示的参数含义：
+            显示方式: 0（默认值）、1（高亮）、22（非粗体）、4（下划线）、24（非下划线）、 5（闪烁）、25（非闪烁）、7（反显）、27（非反显）
+            前景色: 30（黑色）、31（红色）、32（绿色）、 33（黄色）、34（蓝色）、35（洋 红）、36（青色）、37（白色）
+            背景色: 40（黑色）、41（红色）、42（绿色）、 43（黄色）、44（蓝色）、45（洋 红）、46（青色）、47（白色）
 
+            常见开头格式：
+            0m            默认字体正常显示，不高亮
+            32;0       红色字体正常显示
+            1;32;40  显示方式: 高亮    字体前景色：绿色  背景色：黑色
+            0;31;46  显示方式: 正常    字体前景色：红色  背景色：青色
+    """
     if with_file_info ==True:
         info_str = get_caller_str(2)
         log_out(bcolors.OKBLUE+info_str+bcolors.ENDC, level)
