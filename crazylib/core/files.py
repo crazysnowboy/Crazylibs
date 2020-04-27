@@ -2,11 +2,11 @@ import os
 
 
 
-def GetFileList(root_path, sub_dirs=[""],suffix=None):
+def GetFileList(root_path, sub_dirs=[""],suffix=None,filter_name=None):
     file_path_list = []
     for sub_dir in sub_dirs:
         path = os.path.join(root_path, sub_dir)
-        list_file_in_dir(path, file_path_list,suffix)
+        list_file_in_dir(path, file_path_list,suffix,filter_name)
 
     file_path_list.sort()
     return file_path_list
@@ -38,17 +38,26 @@ def FileType(file):
             encode_type = "GBK"
     return encode_type
 
-def list_file_in_dir(path, list_name,suffix):
-    # print(path)
-    for file_name in os.listdir(path):
-        file_path = os.path.join(path, file_name)
+def list_file_in_dir(path, list_name,suffix,filter_name):
+    from tqdm import tqdm
+    item_list = os.listdir(path)
+    for idx in tqdm(range(len(item_list)), desc="listing: "+ path):
+        item_name = item_list[idx]
+        file_path = os.path.join(path,item_name)
         if os.path.isdir(file_path):
-            list_file_in_dir(file_path, list_name,suffix)
+            list_file_in_dir(file_path, list_name, suffix, filter_name)
         else:
-            if suffix!=None:
-                if file_name.endswith(suffix):
-                    list_name.append(file_path)
-            else:
+            should_append = True
+            if suffix is not None:
+                should_append = False
+                if item_name.endswith(suffix):
+                    should_append =  True        
+            if filter_name is not None:
+                should_append =  False
+                if filter_name in item_name:
+                    should_append =  True
+                    
+            if should_append:       
                 list_name.append(file_path)
 
 
