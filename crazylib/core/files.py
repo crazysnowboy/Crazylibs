@@ -105,6 +105,9 @@ def copy_file(srcfile, dstfile):
     import shutil
     shutil.copyfile(srcfile, dstfile)
 
+def move_file(srcfile, dstfile):
+    import shutil
+    shutil.move(srcfile, dstfile)
 
 def copy_files_in_dir(src_path,dst_path):
     dst_file_num = len(get_file_list(dst_path))
