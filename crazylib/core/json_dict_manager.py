@@ -12,6 +12,7 @@ class JsonDictManager():
             self.__data_dict = OrderedDict()
 
         self._is_force_assign = False
+        self._allow_overwrite = False
         self.crazy_key_list=[]
         self.log_color={
                         "HEADER":'\033[95m',
@@ -26,6 +27,10 @@ class JsonDictManager():
         if json_file is not None:
             self.from_json_file(json_file)
 
+    def enable(self,item_name):
+        if "allow_overwrite" == item_name:
+            self._allow_overwrite = True
+        
     def set_force_keys(self,keys):
         self.__force_init_keys = keys
     def set_from_dict(self,input_dict):
@@ -174,7 +179,8 @@ class JsonDictManager():
             for matched in matched_key_crazy_key_list:
                 if min_matched != matched:
                     if min_matched not in matched:
-                        raise ValueError("exist duplicated key: ", matched_key_crazy_key_list)
+                        if self._allow_overwrite != True:
+                            raise ValueError("exist duplicated key: ",matched," == in ==> ", matched_key_crazy_key_list)
 
 
             return min_matched
