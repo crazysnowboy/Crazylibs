@@ -126,8 +126,9 @@ def log_info(*infos,level=0, with_file_info = True,color=None):
 
 
 
-def print_list(data_list,max_n=-1):
+def print_list(data_list,max_n=-1,info=""):
+    log_info(info, with_file_info=False)
     for idx,data in enumerate(data_list):
         if idx>max_n and max_n>0:
             break
-        print(data)
+        log_info("[",idx,"]: ",data,with_file_info=False)
