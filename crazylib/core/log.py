@@ -132,3 +132,8 @@ def print_list(data_list,max_n=-1,info=""):
         if idx>max_n and max_n>0:
             break
         log_info("[",idx,"]: ",data,with_file_info=False)
+
+
+def assert_eq(v1,v2):
+    if v1 != v2:
+        raise ValueError(v1," is not equal to ",v2)
