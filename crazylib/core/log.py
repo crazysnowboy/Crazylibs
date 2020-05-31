@@ -41,8 +41,13 @@ def get_color(color_info):
 
     
 
+# def __get_clickable_path(CallerFilePath,CallerlineNumber):
+#     return 'File "' + CallerFilePath + '", line ' + CallerlineNumber + ','
+
+
 def __get_clickable_path(CallerFilePath,CallerlineNumber):
-    return 'File "' + CallerFilePath + '", line ' + CallerlineNumber + ','
+    return  CallerFilePath + ':' + CallerlineNumber + ' '
+
 
 def __get_time_info():
     import time
