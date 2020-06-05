@@ -41,7 +41,9 @@ def FileType(file):
 def list_file_in_dir(path, list_name,suffix,filter_name):
     from tqdm import tqdm
     item_list = os.listdir(path)
-    for idx in tqdm(range(len(item_list)), desc="listing: "+ path):
+    # iter = tqdm(range(len(item_list)), desc="listing: "+ path)
+    iter = range(len(item_list))
+    for idx in iter:
         item_name = item_list[idx]
         file_path = os.path.join(path,item_name)
         if os.path.isdir(file_path):
