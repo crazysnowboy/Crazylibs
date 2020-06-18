@@ -130,10 +130,11 @@ def GenerateWeight(n,fre):
 
 
 def get_file_dir(file_path):
+    return os.path.dirname(file_path)
+
+
+def get_filename(file_path):
     file_name = os.path.basename(file_path)
-    return file_path.replace(file_name,"")[:-1]
-
-
-
+    return file_name.split(".")[0]
 
 
