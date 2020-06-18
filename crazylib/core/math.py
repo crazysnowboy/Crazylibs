@@ -87,7 +87,7 @@ def euler_to_quaternion(eular):
     return np.array([qw,qx, qy, qz])
 
 def quaternion_to_euler(quaternion):
-    w, x, y, z = quaternion
+    x, y, z, w = quaternion
     t0 = +2.0 * (w * x + y * z)
     t1 = +1.0 - 2.0 * (x * x + y * y)
     roll = math.atan2(t0, t1)
@@ -105,5 +105,4 @@ def quaternion_to_euler(quaternion):
     # res = np.array([pitch,roll, yaw])
     res = np.array([roll,pitch, yaw])
     # res = np.array([roll,yaw, pitch])
-
     return res

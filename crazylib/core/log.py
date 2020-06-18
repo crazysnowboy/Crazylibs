@@ -41,8 +41,13 @@ def get_color(color_info):
 
     
 
+# def __get_clickable_path(CallerFilePath,CallerlineNumber):
+#     return 'File "' + CallerFilePath + '", line ' + CallerlineNumber + ','
+
+
 def __get_clickable_path(CallerFilePath,CallerlineNumber):
-    return 'File "' + CallerFilePath + '", line ' + CallerlineNumber + ','
+    return  CallerFilePath + ':' + CallerlineNumber + ' '
+
 
 def __get_time_info():
     import time
@@ -86,7 +91,7 @@ def log_waring(*infos):
     info_str += "\n"
     log_out(bcolors.WARNING+info_str+bcolors.ENDC,log_level_input=0)
 
-def log_info(*infos,level=0, with_file_info = True,color=None):
+def log_info(*infos,level=0, with_file_info = True,color=None,relative_caller_level = 0):
     """
     color: the color info of text from std::cout
         example:
@@ -108,7 +113,7 @@ def log_info(*infos,level=0, with_file_info = True,color=None):
             0;31;46  显示方式: 正常    字体前景色：红色  背景色：青色
     """
     if with_file_info ==True:
-        info_str = get_caller_str(2)
+        info_str = get_caller_str(2 - relative_caller_level)
         log_out(bcolors.OKBLUE+info_str+bcolors.ENDC, level)
 
     info_str = __get_time_info()+" I "
@@ -126,8 +131,14 @@ def log_info(*infos,level=0, with_file_info = True,color=None):
 
 
 
-def print_list(data_list,max_n=-1):
+def print_list(data_list,max_n=-1,info=""):
+    log_info(info, with_file_info=True,relative_caller_level=-1)
     for idx,data in enumerate(data_list):
         if idx>max_n and max_n>0:
             break
-        print(data)
+        log_info("[",idx,"]: ",data,with_file_info=False)
+
+
+def assert_eq(v1,v2):
+    if v1 != v2:
+        raise ValueError(v1," is not equal to ",v2)
